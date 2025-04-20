@@ -1,1 +1,4 @@
 support_code.ipynb
+*.csv
+__pycache__/
+.chromedriver/
