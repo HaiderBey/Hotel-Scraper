@@ -1,7 +1,3 @@
-"""
-run with 'python -m scrapers.tunisiebooking')
-"""
-
 import requests # To fetch html
 from bs4 import BeautifulSoup # To extract parts of html
 import pandas as pd
