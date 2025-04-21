@@ -1,4 +1,16 @@
-support_code.ipynb
-*.csv
-__pycache__/
 .chromedriver/
+
+# Python
+__pycache__/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+*.ipynb_*
+
+#data 
+*.csv
+
+# VS Code Jupyter
+**/.vscode/
+*.ipynb.metadata
