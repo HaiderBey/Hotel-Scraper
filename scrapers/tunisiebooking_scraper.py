@@ -62,7 +62,9 @@ for link in dest_links:
 
         #Note tripad also contains trip advisor icon if needed for future use
         rate_elem = card.find('div', class_ = 'note-tripad')
-        rate = rate_elem.find('span').text.strip() if rate_elem else '?/5'
+        rate = rate_elem.find('span').text.replace('/5','').strip() if rate_elem else 'N/A'
+        if not(rate):
+            rate = 'N/A'
 
         hotel_destination_elem = dest_content.find('form', {'id': 'hotel'})
         hotel_destination = hotel_destination_elem.find('span').text.replace('Hôtels ', '').strip()
