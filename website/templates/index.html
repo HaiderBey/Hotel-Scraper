@@ -14,44 +14,45 @@
             <p>Find the best hotel prices across Tunisia</p>
         </div>
     </header>
+    <main class = "container">
+        <div class="container">
+            <div class="search-container">
 
-    <div class="container">
-        <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search hotel by name...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="destination-filter">Destination:</label>
+                        <select id="destination-filter">
+                            <option value="">All Destinations</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
 
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search hotel by name...">
-                <button id="search-btn"><i class="fas fa-search"></i></button>
+                    <div class="filter-group">
+                        <label for="min-price">Min Price (DT):</label>
+                        <input type="number" id="min-price" placeholder="Min">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="max-price">Max Price (DT):</label>
+                        <input type="number" id="max-price" placeholder="Max">
+                    </div>
+
+                    <button id="apply-filters">Apply Filters</button>
+                </div>
             </div>
         
-            <div class="filters">
-                <div class="filter-group">
-                    <label for="destination-filter">Destination:</label>
-                    <select id="destination-filter">
-                        <option value="">All Destinations</option>
-                        <!-- Will be populated by JavaScript -->
-                    </select>
-                </div>
+            <div id = "loading">Loading hotels...</div>
 
-                <div class="filter-group">
-                    <label for="min-price">Min Price (DT):</label>
-                    <input type="number" id="min-price" placeholder="Min">
-                </div>
-
-                <div class="filter-group">
-                    <label for="max-price">Max Price (DT):</label>
-                    <input type="number" id="max-price" placeholder="Max">
-                </div>
-
-                <button id="apply-filters">Apply Filters</button>
+            <div id = "hotels-container">
+                    <!-- Hotels will be loaded here by JavaScript -->
             </div>
         </div>
-    
-        <div id = "loading">Loading hotels...</div>
-
-        <div id = "hotels-container">
-                <!-- Hotels will be loaded here by JavaScript -->
-        </div>
-    </div>
+    </main>
 
     <footer>
         <div class = "container">
