@@ -74,6 +74,7 @@ for link in dest_links:
             'Name': name,
             'Image': image,
             'Price' : price,
+            'Rate' : rate,
             'Link': link
         })
 
