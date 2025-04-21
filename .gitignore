@@ -7,6 +7,7 @@ __pycache__/
 .ipynb_checkpoints/
 *.ipynb
 *.ipynb_*
+hotel_scraper.ipynb
 
 #data 
 *.csv

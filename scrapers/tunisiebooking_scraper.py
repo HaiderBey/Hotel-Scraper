@@ -24,9 +24,6 @@ if response.status_code == 200:
     collectLinks(soup, dest_links, "top_destination")
     collectLinks(soup, dest_links, "autre_hotels")
 
-
-print(dest_links)
-
 hotels_data = []
 
 driver = webdriver.Chrome()
@@ -48,12 +45,9 @@ for link in dest_links:
     
     hotel_cards = dest_content.find_all('div', class_ = 'un_destination')
 
-    print(dest_content.find('h1').text.strip())
-
     for card in hotel_cards:
         name_elem = card.find('div', class_ = 'titre-hotel')
         name = name_elem.text.strip() if name_elem else 'N/A'
-        print(name)
         
         img_elem = card.find('img')
         image = img_elem.get('src') if img_elem else "N/A"
@@ -70,11 +64,15 @@ for link in dest_links:
         rate_elem = card.find('div', class_ = 'note-tripad')
         rate = rate_elem.find('span').text.strip() if rate_elem else '?/5'
 
+        hotel_destination_elem = dest_content.find('form', {'id': 'hotel'})
+        hotel_destination = hotel_destination_elem.find('span').text.replace('Hôtels ', '').strip()
+
         hotels_data.append({
             'Name': name,
             'Image': image,
             'Price' : price,
             'Rate' : rate,
+            'Destination' : hotel_destination,
             'Link': link
         })
 
