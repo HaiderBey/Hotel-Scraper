@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunisia Booking Hotel Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .search-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .search-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0055aa;
+        }
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .hotel-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .hotel-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .hotel-info {
+            padding: 15px;
+        }
+        .hotel-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .hotel-destination {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .hotel-price {
+            font-weight: bold;
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+        .hotel-rating {
+            display: inline-block;
+            background-color: #ffdd00;
+            color: #333;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .hotel-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+        .hotel-link:hover {
+            background-color: #e0e0e0;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            font-style: italic;
+            color: #666;
+        }
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+        .scrape-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #e6f2ff;
+            border-radius: 8px;
+        }
+        .scrape-section p {
+            margin-bottom: 15px;
+        }
+        .file-input {
+            margin-bottom: 15px;
+        }
+        .import-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+        }
+        .import-toggle {
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .import-toggle:hover {
+            background-color: #e0e0e0;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tunisia Booking Hotel Search</h1>
+        
+        <div class="scrape-section">
+            <p class="status" id="dataStatus">Loading data...</p>
+            
+            <div class="import-section">
+                <div class="import-toggle" id="importToggle">Show manual import options</div>
+                <div id="manualImport" class="hidden" style="margin-top: 15px;">
+                    <p>Or load a different CSV file:</p>
+                    <input type="file" id="csvFile" accept=".csv" class="file-input">
+                    <button id="loadCsvBtn">Load Custom Data</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-row">
+                <div class="search-group">
+                    <label for="searchInput">Search by Name:</label>
+                    <input type="text" id="searchInput" placeholder="Enter hotel name...">
+                </div>
+                <div class="search-group">
+                    <label for="destinationFilter">Filter by Destination:</label>
+                    <select id="destinationFilter">
+                        <option value="">All Destinations</option>
+                    </select>
+                </div>
+            </div>
+            <div class="search-row">
+                <div class="search-group">
+                    <label for="minPrice">Min Price:</label>
+                    <input type="number" id="minPrice" placeholder="Min price...">
+                </div>
+                <div class="search-group">
+                    <label for="maxPrice">Max Price:</label>
+                    <input type="number" id="maxPrice" placeholder="Max price...">
+                </div>
+                <div class="search-group">
+                    <label for="minRating">Min Rating:</label>
+                    <select id="minRating">
+                        <option value="">Any Rating</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                        <option value="4.5">4.5+</option>
+                    </select>
+                </div>
+            </div>
+            <button id="searchBtn">Search Hotels</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="no-results">Loading hotel data...</div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let hotelsData = [];
+        let filteredData = [];
+        
+        // DOM elements
+        const csvFileInput = document.getElementById('csvFile');
+        const loadCsvBtn = document.getElementById('loadCsvBtn');
+        const dataStatus = document.getElementById('dataStatus');
+        const searchInput = document.getElementById('searchInput');
+        const destinationFilter = document.getElementById('destinationFilter');
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const minRatingSelect = document.getElementById('minRating');
+        const searchBtn = document.getElementById('searchBtn');
+        const resultsContainer = document.getElementById('results');
+        const importToggle = document.getElementById('importToggle');
+        const manualImport = document.getElementById('manualImport');
+        
+        // Event listeners
+        loadCsvBtn.addEventListener('click', () => loadCsvFromFile());
+        searchBtn.addEventListener('click', searchHotels);
+        importToggle.addEventListener('click', toggleManualImport);
+        
+        // Toggle manual import section
+        function toggleManualImport() {
+            manualImport.classList.toggle('hidden');
+            importToggle.textContent = manualImport.classList.contains('hidden') 
+                ? 'Show manual import options' 
+                : 'Hide manual import options';
+        }
+        
+        // Auto-load CSV on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find the most recent CSV file in the data directory
+            findMostRecentCsvFile();
+        });
+        
+        // Find the most recent CSV file
+        function findMostRecentCsvFile() {
+            // Look in the data directory for CSV files
+            const dataDir = 'data/';
+            
+            // Try to find CSV files in the data directory
+            fetch(dataDir)
+                .then(response => {
+                    // If we can access the directory (which usually isn't possible in browsers)
+                    // This is more of a fallback that won't typically work
+                    console.log("Directory listing not supported in browsers. Using default file path.");
+                    loadDefaultCsvFile();
+                })
+                .catch(error => {
+                    // If we can't access the directory, try a default file
+                    console.log("Error accessing directory, using default file path:", error);
+                    loadDefaultCsvFile();
+                });
+        }
+        
+        // Load the default CSV file
+        function loadDefaultCsvFile() {
+            // Try to find the most recent file based on a pattern
+            // This assumes files are named like: tunisie_booking_hotels_YYYYMMDD_HHMM.csv
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            // Try today's date first, then yesterday
+            tryLoadCsvWithDate(today) || tryLoadCsvWithDate(yesterday) || tryLoadFallbackCsv();
+        }
+        
+        // Try to load CSV with a specific date
+        function tryLoadCsvWithDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            
+            const dateStr = `${year}${month}${day}`;
+            const filePath = `data/tunisie_booking_hotels_${dateStr}_*.csv`;
+            
+            // Since we can't use wildcards in fetch, try a few common times
+            const commonTimes = ['0000', '0800', '1200', '1600', '2000'];
+            
+            let loaded = false;
+            for (const time of commonTimes) {
+                const exactPath = `data/tunisie_booking_hotels_${dateStr}_${time}.csv`;
+                if (tryLoadSpecificCsv(exactPath)) {
+                    loaded = true;
+                    break;
+                }
+            }
+            
+            return loaded;
+        }
+        
+        // Try to load a specific CSV file
+        function tryLoadSpecificCsv(filePath) {
+            fetch(filePath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    processCsvData(data, filePath);
+                    return true;
+                })
+                .catch(error => {
+                    console.log(`Error loading ${filePath}:`, error);
+                    return false;
+                });
+                
+            // We return true optimistically - the actual result will be handled in the promise
+            return true;
+        }
+        
+        // Try to load any CSV file as a fallback
+        function tryLoadFallbackCsv() {
+            // Look for any CSV file in the data directory
+            const possibleFiles = [
+                'data/latest_hotels.csv',
+                'data/tunisie_booking_hotels.csv',
+                'data/hotels_data.csv',
+                'tunisie_booking_hotels.csv',
+                'hotels_data.csv'
+            ];
+            
+            let loaded = false;
+            for (const file of possibleFiles) {
+                if (tryLoadSpecificCsv(file)) {
+                    loaded = true;
+                    break;
+                }
+            }
+            
+            if (!loaded) {
+                dataStatus.textContent = 'No CSV file found. Please import one manually.';
+                manualImport.classList.remove('hidden');
+                importToggle.textContent = 'Hide manual import options';
+            }
+            
+            return loaded;
+        }
+        
+        // Load CSV from file input
+        function loadCsvFromFile() {
+            const file = csvFileInput.files[0];
+            if (!file) {
+                alert('Please select a CSV file first');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                processCsvData(e.target.result, file.name);
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // Process CSV data
+        function processCsvData(csvText, fileName) {
+            try {
+                hotelsData = parseCSV(csvText);
+                dataStatus.textContent = `Loaded ${hotelsData.length} hotels from ${fileName || 'file'}`;
+                
+                // Populate destination filter
+                populateDestinationFilter();
+                
+                // Show all hotels initially
+                filteredData = [...hotelsData];
+                displayResults();
+            } catch (error) {
+                console.error('Error parsing CSV:', error);
+                dataStatus.textContent = 'Error loading data. Please check the CSV format.';
+            }
+        }
+        
+        // Parse CSV data
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const headers = lines[0].split(',').map(header => header.trim().replace(/^"(.*)"$/, '$1'));
+            
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                
+                // Handle commas within quoted fields
+                const values = [];
+                let currentValue = '';
+                let insideQuotes = false;
+                
+                for (let char of lines[i]) {
+                    if (char === '"') {
+                        insideQuotes = !insideQuotes;
+                    } else if (char === ',' && !insideQuotes) {
+                        values.push(currentValue.trim().replace(/^"(.*)"$/, '$1'));
+                        currentValue = '';
+                    } else {
+                        currentValue += char;
+                    }
+                }
+                values.push(currentValue.trim().replace(/^"(.*)"$/, '$1'));
+                
+                const row = {};
+                headers.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+                
+                data.push(row);
+            }
+            
+            return data;
+        }
+        
+        // Populate destination filter dropdown
+        function populateDestinationFilter() {
+            const destinations = new Set();
+            hotelsData.forEach(hotel => {
+                if (hotel.Destination) {
+                    destinations.add(hotel.Destination);
+                }
+            });
+            
+            // Clear existing options except the first one
+            while (destinationFilter.options.length > 1) {
+                destinationFilter.remove(1);
+            }
+            
+            // Add new options
+            destinations.forEach(destination => {
+                const option = document.createElement('option');
+                option.value = destination;
+                option.textContent = destination;
+                destinationFilter.appendChild(option);
+            });
+        }
+        
+        // Search hotels based on filters
+        function searchHotels() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const destination = destinationFilter.value;
+            const minPrice = minPriceInput.value ? parseFloat(minPriceInput.value) : 0;
+            const maxPrice = maxPriceInput.value ? parseFloat(maxPriceInput.value) : Infinity;
+            const minRating = minRatingSelect.value ? parseFloat(minRatingSelect.value) : 0;
+            
+            filteredData = hotelsData.filter(hotel => {
+                // Search by name
+                const nameMatch = hotel.Name.toLowerCase().includes(searchTerm);
+                
+                // Filter by destination
+                const destinationMatch = !destination || hotel.Destination === destination;
+                
+                // Filter by price
+                let priceMatch = true;
+                if (hotel.Price && hotel.Price !== 'N/A') {
+                    const priceValue = parseFloat(hotel.Price.replace(/[^\d.]/g, ''));
+                    priceMatch = !isNaN(priceValue) && priceValue >= minPrice && priceValue <= maxPrice;
+                }
+                
+                // Filter by rating
+                let ratingMatch = true;
+                if (minRating > 0) {
+                    const ratingValue = parseFloat(hotel.Rate);
+                    ratingMatch = !isNaN(ratingValue) && ratingValue >= minRating;
+                }
+                
+                return nameMatch && destinationMatch && priceMatch && ratingMatch;
+            });
+            
+            displayResults();
+        }
+        
+        // Display results
+        function displayResults() {
+            if (filteredData.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">No hotels found matching your criteria</div>';
+                return;
+            }
+            
+            let html = '';
+            filteredData.forEach(hotel => {
+                const imageUrl = hotel.Image && hotel.Image !== 'N/A' 
+                    ? hotel.Image 
+                    : 'https://dummyimage.com/300x200/ededed/404040.jpg&text=No+Image';
+                
+                html += `
+                    <div class="hotel-card">
+                        <div class="hotel-image" style="background-image: url('${imageUrl}')"></div>
+                        <div class="hotel-info">
+                            <div class="hotel-name">${hotel.Name}</div>
+                            <div class="hotel-destination">${hotel.Destination || 'Unknown location'}</div>
+                            <div class="hotel-price">${hotel.Price || 'Price not available'}</div>
+                            ${hotel.Rate && hotel.Rate !== 'N/A' 
+                                ? `<div class="hotel-rating">${hotel.Rate} / 5</div>` 
+                                : '<div class="hotel-rating">No rating</div>'}
+                            <a href="${hotel.Link}" target="_blank" class="hotel-link">View Hotel</a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsContainer.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

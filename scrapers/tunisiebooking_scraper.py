@@ -84,6 +84,6 @@ driver.quit()
 df = pd.DataFrame(hotels_data)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M")
 
-output_path = Path("data") / f"tunisie_booking_hotels_{timestamp}.csv"
+output_path = Path("C:/Users/Hedi-pc/Desktop/Scrapping assad/Hotel-Scraper/scrapers/data") / f"tunisie_booking_hotels_{timestamp}.csv"
 df.to_csv(output_path, index=False, encoding='utf-8-sig')
 
