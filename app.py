@@ -6,7 +6,7 @@ from pathlib import Path
 app = Flask(__name__)
 
 def get_latest_data():
-    data_dir = Path('../data')
+    data_dir = Path('data')
     csv_files = list(data_dir.glob('tunisie_booking_hotels_*.csv'))
     
     if not csv_files:
