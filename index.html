@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tunisia Booking Hotel Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Tunisia Booking Hotel Search</h1>
+        
+        <div class="scrape-section">
+            <p class="status" id="dataStatus">Loading data...</p>
+            
+            <div class="import-section">
+                <div class="import-toggle" id="importToggle">Show manual import options</div>
+                <div id="manualImport" class="hidden" style="margin-top: 15px;">
+                    <p>Or load a different CSV file:</p>
+                    <input type="file" id="csvFile" accept=".csv" class="file-input">
+                    <button id="loadCsvBtn">Load Custom Data</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-row">
+                <div class="search-group">
+                    <label for="searchInput">Search by Name:</label>
+                    <input type="text" id="searchInput" placeholder="Enter hotel name...">
+                </div>
+                <div class="search-group">
+                    <label for="destinationFilter">Filter by Destination:</label>
+                    <select id="destinationFilter">
+                        <option value="">All Destinations</option>
+                    </select>
+                </div>
+            </div>
+            <div class="search-row">
+                <div class="search-group">
+                    <label for="minPrice">Min Price:</label>
+                    <input type="number" id="minPrice" placeholder="Min price...">
+                </div>
+                <div class="search-group">
+                    <label for="maxPrice">Max Price:</label>
+                    <input type="number" id="maxPrice" placeholder="Max price...">
+                </div>
+                <div class="search-group">
+                    <label for="minRating">Min Rating:</label>
+                    <select id="minRating">
+                        <option value="">Any Rating</option>
+                        <option value="1">1+</option>
+                        <option value="2">2+</option>
+                        <option value="3">3+</option>
+                        <option value="4">4+</option>
+                        <option value="4.5">4.5+</option>
+                    </select>
+                </div>
+            </div>
+            <button id="searchBtn">Search Hotels</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="no-results">Loading hotel data...</div>
+        </div>
+    </div>
+
+</body>
+</html>
