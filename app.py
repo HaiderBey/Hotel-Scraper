@@ -32,7 +32,7 @@ def get_hotels():
     min_price = request.args.get('min_price', None)
     max_price = request.args.get('max_price', None)
     rate_query = request.args.get('Rate', None)
-    destination_query = request.args.get(('Destination', '').lower())
+    destination_query = request.args.get('Destination', '').lower()
 
     if name_query:
         df = df[df['Name'].str.lower().str.contains(name_query)]
@@ -46,9 +46,9 @@ def get_hotels():
             df = df[df['numeric_price'] <= float(max_price)]
 
     if rate_query:
-        df['numeric_rate'] = df['Rate'].str.extract(r'(\d+(?:\.\d+)?)').astype(float)
+        df['numeric_rate'] = df['Rate'].astype(str).str.extract(r'(\d+(?:\.\d+)?').astype(float)
 
-        df['numeric_rate'] = df[df['numeric_price'] == float(rate_query)]
+        df = df[df['numeric_rate'] >= float(rate_query)]
 
     if destination_query:
         df = df[df['Destination'].str.lower().str.contains(destination_query)]
