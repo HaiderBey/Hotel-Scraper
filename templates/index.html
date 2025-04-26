@@ -3,58 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tunisia Booking Hotel Search</title>
+    <title>Wetla Hotels</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Tunisia Booking Hotel Search</h1>
-        
-        <div class="scrape-section">
-            <p class="status" id="dataStatus">Loading data...</p>
-        </div>
-        
-        <div class="search-container">
-            <div class="search-row">
-                <div class="search-group">
-                    <label for="searchInput">Search by Name:</label>
-                    <input type="text" id="searchInput" placeholder="Enter hotel name...">
-                </div>
-                <div class="search-group">
-                    <label for="destinationFilter">Filter by Destination:</label>
-                    <select id="destinationFilter">
-                        <option value="">All Destinations</option>
-                    </select>
+    <div class="page-container">
+        <header>
+            <div class = "header-content">
+                <div class = "logo-container">
+                    <img src="/static/logo.png" alt="Wetla Hotels" class = "logo">
                 </div>
             </div>
-            <div class="search-row">
-                <div class="search-group">
-                    <label for="minPrice">Min Price:</label>
-                    <input type="number" id="minPrice" placeholder="Min price...">
+        
+            <h1>Discover Luxury in Tunisia</h1>
+            <p class="tagline">Experience the finest accommodations with unparalleled Tunisian hospitality</p>
+        </header>
+
+        <div class = "main-content">
+
+            <div class="search-container">
+
+                <div class="search-header">
+                    <h2>Find Your Perfect Stay</h2>
+                    <p id="dataStatus" class="status">Loading exquisite properties...</p>
                 </div>
-                <div class="search-group">
-                    <label for="maxPrice">Max Price:</label>
-                    <input type="number" id="maxPrice" placeholder="Max price...">
-                </div>
-                <div class="search-group">
-                    <label for="minRating">Min Rating:</label>
-                    <select id="minRating">
-                        <option value="">Any Rating</option>
-                        <option value="1">1+</option>
-                        <option value="2">2+</option>
-                        <option value="3">3+</option>
-                        <option value="4">4+</option>
-                        <option value="4.5">4.5+</option>
-                    </select>
+                
+                <div class="search-panel">
+                    <div class="search-row">
+                        <div class="search-group">
+                            <label for="searchInput">Hotel Name</label>
+                            <input type="text" id="searchInput" placeholder="Search by name...">
+                        </div>
+                        <div class="search-group">
+                            <label for="destinationFilter">Destination</label>
+                            <select id="destinationFilter">
+                                <option value="">All Destinations</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="search-row">
+                        <div class="search-group">
+                            <label for="minPrice">Minimum Price (TND)</label>
+                            <input type="number" id="minPrice" placeholder="Min price...">
+                        </div>
+                        <div class="search-group">
+                            <label for="maxPrice">Maximum Price (TND)</label>
+                            <input type="number" id="maxPrice" placeholder="Max price...">
+                        </div>
+                        <div class="search-group">
+                            <label for="minRating">Minimum Rating</label>
+                            <select id="minRating">
+                                <option value="">Any Rating</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
+                                <option value="3">3+</option>
+                                <option value="4">4+</option>
+                                <option value="4.5">4.5+</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button id="searchBtn" class="search-button">
+                        <span>Search Hotels</span>
+                    </button>
                 </div>
             </div>
-            <button id="searchBtn">Search Hotels</button>
+                
+            <div class="results-container">
+
+                <h2>Exceptional Properties</h2>
+
+                <div id="results" class="results-grid">
+                    <div class="loading-message">Curating your luxury experience...</div>
+                </div>
+
+            </div>
         </div>
-        
-        <div id="results" class="results">
-            <div class="no-results">Loading hotel data...</div>
-        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/static/logo.png" alt="Wetla Hotels" class="logo-small">
+                </div>
+                <div class="footer-info">
+                    <p>&copy; 2023 Wetla Hotels. All rights reserved.</p>
+                    <p>Discover the finest luxury accommodations across Tunisia</p>
+                </div>
+                <div class="footer-contact">
+                    <p>Contact: info@wetlahotels.com</p>
+                    <p>+216 71 123 456</p>
+                </div>
+            </div>
+        </footer>
+
     </div>
 </body>
 </html>
