@@ -1,8 +1,6 @@
- // Global variables
 let hotelsData = [];
 let filteredData = [];
 
-// DOM elements
 const searchInput = document.getElementById('searchInput');
 const destinationFilter = document.getElementById('destinationFilter');
 const minPriceInput = document.getElementById('minPrice');
@@ -12,17 +10,14 @@ const searchBtn = document.getElementById('searchBtn');
 const resultsContainer = document.getElementById('results');
 const dataStatus = document.getElementById('dataStatus');
 
-// Event listeners
 searchBtn.addEventListener('click', searchHotels);
 
-// Load data when page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeAnimations()
     loadHotelData();
 });
 
 function initializeAnimations() {
-    // Add subtle animation to the search button
     searchBtn.addEventListener("mouseover", () => {
       searchBtn.style.transform = "translateY(-2px)"
     })
@@ -31,7 +26,6 @@ function initializeAnimations() {
       searchBtn.style.transform = "translateY(0)"
     })
   
-    // Add subtle animation to input fields
     const inputs = document.querySelectorAll("input, select")
     inputs.forEach((input) => {
       input.addEventListener("focus", () => {
@@ -46,7 +40,6 @@ function initializeAnimations() {
     })
   }
 
-// Load hotel data from Flask API
 function loadHotelData() {
     dataStatus.textContent = 'iscovering luxury accommodations...';
     resultsContainer.innerHTML = '<div class="loading-message">Curating your luxury experience...</div>'
@@ -67,10 +60,8 @@ function loadHotelData() {
             hotelsData = data.hotels;
             dataStatus.textContent = `${hotelsData.length} exceptional properties found`;
             
-            // Populate destination filter
             populateDestinationFilter(data.destinations);
             
-            // Show all hotels initially
             filteredData = [...hotelsData];
             displayResults();
             
@@ -92,14 +83,11 @@ function loadHotelData() {
         });
 }
 
-// Populate destination filter dropdown
 function populateDestinationFilter(destinations) {
-    // Clear existing options except the first one
     while (destinationFilter.options.length > 1) {
         destinationFilter.remove(1);
     }
     
-    // Add new options
     destinations.forEach(destination => {
         const option = document.createElement('option');
         option.value = destination;
@@ -108,7 +96,6 @@ function populateDestinationFilter(destinations) {
     });
 }
 
-// Search hotels based on filters
 function searchHotels() {
     const searchTerm = searchInput.value.toLowerCase();
     const destination = destinationFilter.value;
@@ -122,22 +109,19 @@ function searchHotels() {
 
     setTimeout(() => {
         filteredData = hotelsData.filter((hotel) => {
-          // Search by name
-          const nameMatch = hotel.Name.toLowerCase().includes(searchTerm)
+          const nameMatch = hotel.Name.toLowerCase().includes(searchTerm) //by name
     
-          // Filter by destination
           const destinationMatch =
-            !destination || (hotel.Destination && hotel.Destination.toLowerCase().includes(destination.toLowerCase()))
+            !destination || (hotel.Destination && hotel.Destination.toLowerCase().includes(destination.toLowerCase())) //by dest
     
-          // Filter by price
           let priceMatch = true
           if (hotel.Price && hotel.Price !== "N/A") {
             const priceStr = hotel.Price.toString()
             const priceValue = Number.parseFloat(priceStr.replace(/[^\d.]/g, ""))
             priceMatch = !isNaN(priceValue) && priceValue >= minPrice && priceValue <= maxPrice
-          }
+          } // by price
     
-          // Filter by rating
+          //by rating
           let ratingMatch = true
           if (minRating > 0 && hotel.Rate) {
             const rateStr = hotel.Rate.toString()
@@ -150,16 +134,13 @@ function searchHotels() {
     
         displayResults()
     
-        // Reset button state
         searchBtn.disabled = false
         searchBtn.innerHTML = "<span>Search Hotels</span>"
     
-        // Scroll to results
         document.querySelector(".results-container").scrollIntoView({ behavior: "smooth", block: "start" })
       }, 800)
 }
 
-// Display resultse
 function displayResults() {
     if (filteredData.length === 0) {
         resultsContainer.innerHTML = '<div class="no-results">No properties match your refined criteria. Please adjust your search parameters.</div>';

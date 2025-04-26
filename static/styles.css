@@ -86,7 +86,7 @@
   
   .logo {
     height: auto;
-    width: 180px; /* Increased from 120px */
+    width: 200px; /* Increased from 120px */
     filter: drop-shadow(0 0 10px rgba(200, 164, 92, 0.3));
     transition: transform 0.3s ease;
   }
