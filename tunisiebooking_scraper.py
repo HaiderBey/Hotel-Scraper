@@ -1,11 +1,11 @@
 import requests # To fetch html
 from bs4 import BeautifulSoup # To extract parts of html
 import pandas as pd
-import time
+# import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 from pathlib import Path
 
@@ -36,13 +36,13 @@ for link in dest_links:
 
     driver.get(link)
     
-    while True:
-        try:
-            see_more = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//u[contains(., 'Voir plus')]")))
-            see_more.click()
-            time.sleep(2)
-        except:
-            break
+    # while True:
+    #     try:
+    #         see_more = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//u[contains(., 'Voir plus')]")))
+    #         see_more.click()
+    #         time.sleep(2)
+    #     except:
+    #         break
 
 
     dest_content = BeautifulSoup(driver.page_source, "html.parser")
