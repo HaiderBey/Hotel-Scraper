@@ -74,7 +74,9 @@ for link in dest_links:
         """
         
         price_elem = card.find('div', class_ = 'note-adresse-hotel')
-        price = price_elem.find('span').text.strip() if price_elem else '0'
+        price = price_elem.find('span').text.strip() if price_elem else None
+        if not(price):
+            price = None
 
         #Note tripad also contains trip advisor icon if needed for future use
         rate_elem = card.find('div', class_ = 'note-tripad')
